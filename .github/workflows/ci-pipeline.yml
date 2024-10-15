@@ -67,8 +67,14 @@ jobs:
       - name: Set npm registry
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
-      # First publish using the name from package.json
-      - name: Publish beta version
+      # Append commit SHA to version for beta
+      - name: Append commit SHA to version for beta
+        run: |
+          GIT_COMMIT_HASH=$(git rev-parse --short HEAD)
+          npm version $(node -p "require('./package.json').version + '-beta.${GIT_COMMIT_HASH}'") --no-git-tag-version
+
+      # First publish using the name from package.json with the commit SHA
+      - name: Publish beta version with SHA
         run: npm publish --tag beta --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -78,8 +84,8 @@ jobs:
         run: |
           sed -i 's/"name": "[^"]*"/"name": "inputron"/' package.json
 
-      # Second publish under the name "inputron"
-      - name: Publish under "inputron"
+      # Second publish under the name "inputron" with commit SHA
+      - name: Publish under "inputron" with SHA
         run: npm publish --tag beta --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -106,7 +112,7 @@ jobs:
       - name: Set npm registry
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
-      # First publish using the name from package.json
+      # First publish using the name from package.json without commit SHA
       - name: Publish production version
         run: npm publish --access public
         env:
