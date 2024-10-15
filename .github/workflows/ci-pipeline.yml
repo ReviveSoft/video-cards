@@ -64,6 +64,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set npm registry
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
       - name: Use cached build
         run: npm publish --tag beta --access public
         env:
@@ -76,6 +79,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Set npm registry
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
       - name: Use cached build
         run: npm publish --access public
