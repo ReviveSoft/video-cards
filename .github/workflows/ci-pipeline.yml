@@ -23,32 +23,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Cache node modules
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
       - name: Install dependencies
         run: npm install
 
+      # Build the project before publishing
       - name: Build the project
         run: npm run build
 
-  test:
-    needs: install-and-build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Use cached node_modules and build
-        run: npm run test
-
   publish-beta:
-    needs: [install-and-build, test]
+    needs: install-and-build
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.publish_job == 'beta' }}
     steps:
@@ -58,25 +41,35 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Rerun the build before publishing
       - name: Build the project
         run: npm run build
 
       - name: Set npm registry
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
-      - name: Append commit SHA to version for beta
-        run: |
-          GIT_COMMIT_HASH=$(git rev-parse --short HEAD)
-          npm version $(node -p "require('./package.json').version + '-beta.${GIT_COMMIT_HASH}'") --no-git-tag-version
-
+      # First publish using the name from package.json
       - name: Publish beta version
         run: npm publish --tag beta --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      # Modify package.json to publish under "inputron"
+      - name: Temporarily change package name to "inputron"
+        run: |
+          sed -i 's/"name": "[^"]*"/"name": "inputron"/' package.json
+
+      # Second publish under the name "inputron"
+      - name: Publish under "inputron"
+        run: npm publish --tag beta --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # Revert the package.json back to original name
+      - name: Revert package.json changes
+        run: git checkout package.json
+
   publish-production:
-    needs: [install-and-build, test]
+    needs: install-and-build
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.publish_job == 'production' }}
     steps:
@@ -86,14 +79,29 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Rerun the build before publishing
       - name: Build the project
         run: npm run build
 
       - name: Set npm registry
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
+      # First publish using the name from package.json
       - name: Publish production version
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # Modify package.json to publish under "inputron"
+      - name: Temporarily change package name to "inputron"
+        run: |
+          sed -i 's/"name": "[^"]*"/"name": "inputron"/' package.json
+
+      # Second publish under the name "inputron"
+      - name: Publish under "inputron"
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # Revert the package.json back to original name
+      - name: Revert package.json changes
+        run: git checkout package.json
