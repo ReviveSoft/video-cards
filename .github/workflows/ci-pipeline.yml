@@ -57,7 +57,7 @@ jobs:
         run: npm run test
 
   publish-beta:
-    needs: install-and-build
+    needs: [install-and-build, test]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.publish_job == 'beta' }}
     steps:
@@ -67,13 +67,18 @@ jobs:
       - name: Set npm registry
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
+      - name: Append commit SHA to version for beta
+        run: |
+          GIT_COMMIT_HASH=$(git rev-parse --short HEAD)
+          npm version $(node -p "require('./package.json').version + '-beta.${GIT_COMMIT_HASH}'") --no-git-tag-version
+
       - name: Use cached build
         run: npm publish --tag beta --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-production:
-    needs: install-and-build
+    needs: [install-and-build, test]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.publish_job == 'production' }}
     steps:
