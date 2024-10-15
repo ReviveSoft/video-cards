@@ -1,5 +1,5 @@
 {
-  "name": "@revivesoft/inputron",
+  "name": "inputron",
   "description": "AI Powered building blocks for your forms 🚀! Added auto complete , translation , enhancement and more to your text areas and inputs.",
   "private": false,
   "version": "1.0.0",
