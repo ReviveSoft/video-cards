@@ -23,15 +23,34 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
         run: npm install
 
-      # Build the project before publishing
+      # Build the project to generate the 'dist/' folder
       - name: Build the project
         run: npm run build
 
-  publish-beta:
+  test:
     needs: install-and-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Run the tests before publishing
+      - name: Run tests
+        run: npm run test
+
+  publish-beta:
+    needs: [install-and-build, test]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.publish_job == 'beta' }}
     steps:
@@ -41,6 +60,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # Build the project before publishing
       - name: Build the project
         run: npm run build
 
@@ -69,7 +89,7 @@ jobs:
         run: git checkout package.json
 
   publish-production:
-    needs: install-and-build
+    needs: [install-and-build, test]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.publish_job == 'production' }}
     steps:
@@ -79,6 +99,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # Build the project before publishing
       - name: Build the project
         run: npm run build
 
