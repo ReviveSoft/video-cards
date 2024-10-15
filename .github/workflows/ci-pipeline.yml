@@ -23,6 +23,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Caching node_modules for faster installs
       - name: Cache node modules
         uses: actions/cache@v2
         with:
@@ -34,15 +35,19 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # Caching build artifacts and ensuring 'dist/' is cached
       - name: Cache build artifacts
         id: build-cache
         uses: actions/cache@v2
         with:
-          path: build/
-          key: ${{ runner.os }}-build-${{ hashFiles('src/**/*') }}
+          path: |
+            build/
+            dist/
+          key: ${{ runner.os }}-build-${{ hashFiles('src/**/*') }} # Include source files in hash to invalidate on change
           restore-keys: |
             ${{ runner.os }}-build-
 
+      # Run the build command, which should generate 'dist/'
       - name: Build the project
         run: npm run build
 
@@ -64,6 +69,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Ensure 'dist/' is present before publishing
+      - name: Verify dist folder
+        run: ls -la dist
+
       - name: Set npm registry
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
@@ -72,6 +81,7 @@ jobs:
           GIT_COMMIT_HASH=$(git rev-parse --short HEAD)
           npm version $(node -p "require('./package.json').version + '-beta.${GIT_COMMIT_HASH}'") --no-git-tag-version
 
+      # Ensure build artifacts (dist) are published
       - name: Use cached build
         run: npm publish --tag beta --access public
         env:
@@ -84,6 +94,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      # Ensure 'dist/' is present before publishing
+      - name: Verify dist folder
+        run: ls -la dist
 
       - name: Set npm registry
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc

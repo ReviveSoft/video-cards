@@ -1,5 +1,5 @@
 {
-  "name": "inputron",
+  "name": "@revivesoft/inputron",
   "description": "AI Powered building blocks for your forms 🚀! Added auto complete , translation , enhancement and more to your text areas and inputs.",
   "private": false,
   "version": "1.0.0",
@@ -48,7 +48,8 @@
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "files": [
-    "dist"
+    "dist/",
+    "README.md"
   ],
   "types": "dist/index.d.ts",
   "exports": {
