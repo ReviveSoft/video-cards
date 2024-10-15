@@ -73,11 +73,11 @@ yarn add inputron
 
 ## Documentation
 
-For more detailed documentation and examples, please visit our [official documentation](#).
+For more detailed documentation and examples, please visit our [official documentation](https://www.inputron.com/docs).
 
 ## Contributing
 
-We welcome contributions! Please read our [contributing guidelines](#) before submitting a pull request.
+We appreciate your interest, but we are not accepting contributions at this time.
 
 ## License
 
