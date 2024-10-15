@@ -1,0 +1,74 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch: # Allows for manual triggering
+
+jobs:
+  install-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Cache build artifacts
+        id: build-cache
+        uses: actions/cache@v2
+        with:
+          path: build/
+          key: ${{ runner.os }}-build-${{ hashFiles('src/**/*') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      - name: Build the project
+        run: npm run build
+
+  test:
+    needs: install-and-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use cached node_modules and build
+        run: npm run test
+
+  publish-beta:
+    needs: install-and-build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use cached build
+        run: npm publish --tag beta --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-production:
+    needs: install-and-build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use cached build
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,12 +1,13 @@
 {
-  "name": "inputron",
+  "name": "@revivesoft/inputron-library",
   "description": "AI Powered building blocks for your forms 🚀! Added auto complete , translation , enhancement and more to your text areas and inputs.",
   "private": false,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "test": "",
     "lint": "eslint .",
     "build:css": "postcss src/styles/tailwind.css -o dist/tailwind.css",
     "preview": "cross-env NODE_ENV=production node server"
