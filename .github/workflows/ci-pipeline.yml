@@ -5,7 +5,17 @@ on:
     branches:
       - main
 
-  workflow_dispatch: # Allows for manual triggering
+  workflow_dispatch:
+    # This will trigger either publish-beta or publish-production manually
+    inputs:
+      publish-job:
+        description: "Which publish job to run (beta or production)"
+        required: true
+        default: "beta"
+        type: choice
+        options:
+          - beta
+          - production
 
 jobs:
   install-and-build:
@@ -50,7 +60,7 @@ jobs:
   publish-beta:
     needs: install-and-build
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
+    if: ${{ github.event.inputs.publish-job == 'beta' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -63,7 +73,7 @@ jobs:
   publish-production:
     needs: install-and-build
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
+    if: ${{ github.event.inputs.publish-job == 'production' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
