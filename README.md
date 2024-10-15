@@ -10,14 +10,7 @@ Inputron is a powerful package designed to enhance user input experiences in web
 
 ## Example Usage
 
-- First headover to inputron.com and sign up to obtain an API KEY and CLIENT ID.
-- add the following to your .env file.
 
-```jsx
-INPUTRON_API_KEY=ENTER KEY DETAILS HERE
-INPUTRON_ENGINE_API_ENDPOINT=https://api.inputron.com
-INPUTRON_CLIENT_ID=ENTER YOUR CLIENT ID
-```
 Here is an example of how to use the `TextareaTron` component from the Inputron package:
 
 ```jsx
@@ -70,6 +63,18 @@ or
 ```bash
 yarn add inputron
 ```
+
+You must obtain an API Key and Client ID from (https://www.inputron.com)
+
+Edit your .env variables to include the API Key and Client ID
+
+```jsx
+INPUTRON_API_KEY=ENTER KEY DETAILS HERE
+INPUTRON_ENGINE_API_ENDPOINT=https://api.inputron.com
+INPUTRON_CLIENT_ID=ENTER YOUR CLIENT ID
+```
+
+
 
 ## Documentation
 
