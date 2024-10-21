@@ -1,18 +1,18 @@
 "use client";
-import "../styles/tailwind.css";
+import "../../styles/tailwind.css";
 import { useState } from "react";
 import { TextareaTronButton } from "./textarea-tron-button";
-// import { enhanceAction } from "../actions/inputronActions";
+import { enhanceAction } from "../../actions/inputronActions";
 
 import * as React from "react";
-import { cn } from "../lib/utils";
-import { EnhanceAPIPayloadType } from "../types";
-import { ButtonConfigType,EnhanceResponseType } from "../types";
+import { cn } from "../../lib/utils";
+import { EnhanceAPIPayloadType ,ButtonConfigType} from "../../types";
+
 
 interface TextareaTronProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   customOnChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  enhanceAction: (payload: EnhanceAPIPayloadType) => EnhanceResponseType;
+  // enhanceAction: (payload: EnhanceAPIPayloadType) => EnhanceResponseType;
   prompt?: string;
   value: string;
   labelConfig?: {
@@ -27,7 +27,7 @@ interface TextareaTronProps
 
 const TextareaTron = React.forwardRef<HTMLTextAreaElement, TextareaTronProps>(
   (
-    {enhanceAction,
+    {
       customOnChange,
       setTextValue,
       labelConfig,

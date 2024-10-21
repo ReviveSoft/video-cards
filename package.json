@@ -13,6 +13,7 @@
     "preview": "cross-env NODE_ENV=production node server"
   },
   "dependencies": {
+    "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/themes": "^3.1.4",
     "@types/node": "^22.7.5",
     "class-variance-authority": "^0.7.0",
@@ -60,7 +61,7 @@
     "./server": {
       "import": "./dist/server.es.js",
       "require": "./dist/server.cjs.js"
-    }
-    ,  "./css": "./dist/style.css" 
+    },
+    "./css": "./dist/style.css"
   }
 }

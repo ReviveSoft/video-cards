@@ -1,6 +1,6 @@
 
-import { Button } from '../shared/ui/button';
-import { TextareaTronButtonProps } from '../types';
+import { Button } from './button';
+import { TextareaTronButtonProps } from '../../types';
 import React from 'react';
 import { Bot } from 'lucide-react';
 

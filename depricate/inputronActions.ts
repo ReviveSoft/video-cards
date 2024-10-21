@@ -1,6 +1,6 @@
-'use server'
-import { getInptronEngineApiEndPoint, getClientId, getInputronEngineApiKey } from '../lib/utils';
-import { EnhanceAPIPayloadType, SuggestAPIPayloadType, PredictTextPayloadType, TranslateAPIPayloadType } from '../types';
+'use server';
+import { getInptronEngineApiEndPoint, getClientId, getInputronEngineApiKey } from '../src/lib/utils';
+import { EnhanceAPIPayloadType, SuggestAPIPayloadType, PredictTextPayloadType,TranslateAPIPayloadType } from '../src/types';
 
 export async function enhanceAction(payload: EnhanceAPIPayloadType) {
     const backendServer = getInptronEngineApiEndPoint();

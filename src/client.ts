@@ -1,21 +1,15 @@
 import "./styles/tailwind.css";
 
 
-import { TextareaTron } from "./textareatron";
-
-import {
-  getInptronEngineApiEndPoint,
-  getInputronEngineApiKey,
-  getBaseUrl,
-  getClientId,
-} from "./lib/utils";
-
-// export  *  from "./types";
+import { TextareaTron } from "./components/textareatron";
+import {SelecTron} from './components/select';
+import TranslateTron from './components/translate/translatetron';
+import {SuggesTron} from './components/suggest';
 
 export {
   TextareaTron,
-  getInptronEngineApiEndPoint,
-  getInputronEngineApiKey,
-  getBaseUrl,
-  getClientId,
+  SelecTron,
+  TranslateTron,
+  SuggesTron
 };
+

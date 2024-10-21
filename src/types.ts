@@ -70,3 +70,9 @@ export type EnhanceAPIPayloadType = {
 export type PredictTextPayloadType = {
   text: string;
 };
+
+
+export type TranslateAPIPayloadType = {
+  text:string;
+  languages: string[]
+}
