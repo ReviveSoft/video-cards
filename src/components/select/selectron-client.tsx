@@ -77,7 +77,7 @@ interface selectronProps extends React.InputHTMLAttributes<HTMLSelectElement> {
   }
 
   if (loading) {
-    return <div className="text-muted-foreground  flex flex-row items-center"><Loader className="animate-pulse h-4 text-blue-600 ml-2" /> loading...</div>;
+    return <div className="text-muted-foreground  flex flex-row items-center"><Loader className="animate-spin h-4 text-blue-600 ml-2" /> loading...</div>;
   }
   if (data?.data) {
     const selection = data.data?.list;
@@ -98,7 +98,7 @@ interface selectronProps extends React.InputHTMLAttributes<HTMLSelectElement> {
               .filter((item): item is any => typeof item !== "string")
               .map((item: SelectronType) => {
                 return (
-                  <SelectItem key={item.id} value={item.value}>
+                  <SelectItem key={item.id} value={item.value} className="bg-white">
                     {item.value}
                   </SelectItem>
                 );

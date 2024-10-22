@@ -2,7 +2,7 @@
 import LabelTronClient from "./labeltronClient";
 import { useEffect, useState } from "react";
 import { translateAction } from "../../actions/inputronActions";
-
+import { Loader } from "lucide-react";
 interface LabelTronType extends React.HTMLAttributes<HTMLLabelElement> {
   children: string;
   interval: number;
@@ -55,8 +55,10 @@ const LabelTron =  ({
   return (
     <>
       {error && <div>{error}</div>}
+      {!loading && <Loader className="animate-spin h-4" />}
       {translatedData && (
         <>
+    
           <LabelTronClient
             icon={icon}
             data={translatedData}

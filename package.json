@@ -54,7 +54,7 @@
   ],
   "types": "dist/index.d.ts",
   "exports": {
-    "./client": {
+    ".": {
       "import": "./dist/client.es.js",
       "require": "./dist/client.cjs.js"
     },

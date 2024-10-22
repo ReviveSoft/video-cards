@@ -28,7 +28,7 @@ export default defineConfig({
     lib: {
       entry: [
         resolve(__dirname, "src/client.ts"),
-        resolve(__dirname, "src/server.ts"),
+        // resolve(__dirname, "src/server.ts"),
       ],
       name: "@inputron",
       formats: ["es", "cjs"],
