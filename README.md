@@ -62,7 +62,7 @@ npm install @revivesoft/inputron
 or
 
 ```bash
-yarn add inputron
+yarn add @revivesoft/inputron
 ```
 
 You must obtain an API Key and Client ID from (https://www.inputron.com)
