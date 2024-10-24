@@ -5,10 +5,7 @@ import dts from "vite-plugin-dts";
 import preserveDirectives from "rollup-preserve-directives";
 import { fileURLToPath } from "node:url";
 
-const filesNeedToExclude = [
-  "src/components/select/*",
-  "src/pluggables/suggest/*",
-];
+const filesNeedToExclude = ["src/pluggables/suggest/*"];
 
 const filesPathToExclude = filesNeedToExclude.map((src) => {
   return fileURLToPath(new URL(src, import.meta.url));
@@ -37,8 +34,9 @@ export default defineConfig({
     rollupOptions: {
       external: ["react", "react-dom"],
       output: {
-        	preserveModules: true,
-			preserveModulesRoot: 'src',
+        preserveModules: true,
+
+        preserveModulesRoot: "src",
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
