@@ -1,3 +1,137 @@
+# name: CI Pipeline
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+#   workflow_dispatch:
+#     inputs:
+#       publish_job:
+#         description: "Choose which publish job to run"
+#         required: true
+#         default: "beta"
+#         type: choice
+#         options:
+#           - beta
+#           - production
+
+# jobs:
+#   install-and-build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Cache node modules
+#         uses: actions/cache@v2
+#         with:
+#           path: node_modules
+#           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+#           restore-keys: |
+#             ${{ runner.os }}-node-
+
+#       - name: Install dependencies
+#         run: npm install
+
+#       # Build the project to generate the 'dist/' folder
+#       - name: Build the project
+#         run: npm run build
+
+#   test:
+#     needs: install-and-build
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       # Run the tests before publishing
+#       - name: Run tests
+#         run: npm run test
+
+#   publish-beta:
+#     needs: [install-and-build, test]
+#     runs-on: ubuntu-latest
+#     if: ${{ github.event.inputs.publish_job == 'beta' }}
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Install dependencies
+#         run: npm install
+
+#       # Build the project before publishing
+#       - name: Build the project
+#         run: npm run build
+
+#       - name: Set npm registry
+#         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+#       # Append commit SHA to version for beta
+#       - name: Append commit SHA to version for beta
+#         run: |
+#           GIT_COMMIT_HASH=$(git rev-parse --short HEAD)
+#           npm version $(node -p "require('./package.json').version + '-beta.${GIT_COMMIT_HASH}'") --no-git-tag-version
+
+#       # First publish using the name from package.json with the commit SHA
+#       - name: Publish beta version with SHA
+#         run: npm publish --tag beta --access public
+#         env:
+#           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+#       # Modify package.json to publish under "inputron"
+#       - name: Temporarily change package name to "inputron"
+#         run: |
+#           sed -i 's/"name": "[^"]*"/"name": "inputron"/' package.json
+
+#       # Second publish under the name "inputron" with commit SHA
+#       - name: Publish under "inputron" with SHA
+#         run: npm publish --tag beta --access public
+#         env:
+#           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+#       # Revert the package.json back to original name
+#       - name: Revert package.json changes
+#         run: git checkout package.json
+
+#   publish-production:
+#     needs: [install-and-build, test]
+#     runs-on: ubuntu-latest
+#     if: ${{ github.event.inputs.publish_job == 'production' }}
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Install dependencies
+#         run: npm install
+
+#       # Build the project before publishing
+#       - name: Build the project
+#         run: npm run build
+
+#       - name: Set npm registry
+#         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+#       # First publish using the name from package.json without commit SHA
+#       - name: Publish production version
+#         run: npm publish --access public
+#         env:
+#           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+#       # Modify package.json to publish under "inputron"
+#       - name: Temporarily change package name to "inputron"
+#         run: |
+#           sed -i 's/"name": "[^"]*"/"name": "inputron"/' package.json
+
+#       # Second publish under the name "inputron"
+#       - name: Publish under "inputron"
+#         run: npm publish --access public
+#         env:
+#           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+#       # Revert the package.json back to original name
+#       - name: Revert package.json changes
+#         run: git checkout package.json
 name: CI Pipeline
 
 on:
@@ -15,6 +149,15 @@ on:
         options:
           - beta
           - production
+      version_bump:
+        description: "Choose version bump type"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
 
 jobs:
   install-and-build:
@@ -34,7 +177,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Build the project to generate the 'dist/' folder
       - name: Build the project
         run: npm run build
 
@@ -45,56 +187,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Run the tests before publishing
       - name: Run tests
         run: npm run test
 
-  publish-beta:
-    needs: [install-and-build, test]
-    runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.publish_job == 'beta' }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install dependencies
-        run: npm install
-
-      # Build the project before publishing
-      - name: Build the project
-        run: npm run build
-
-      - name: Set npm registry
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
-      # Append commit SHA to version for beta
-      - name: Append commit SHA to version for beta
-        run: |
-          GIT_COMMIT_HASH=$(git rev-parse --short HEAD)
-          npm version $(node -p "require('./package.json').version + '-beta.${GIT_COMMIT_HASH}'") --no-git-tag-version
-
-      # First publish using the name from package.json with the commit SHA
-      - name: Publish beta version with SHA
-        run: npm publish --tag beta --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      # Modify package.json to publish under "inputron"
-      - name: Temporarily change package name to "inputron"
-        run: |
-          sed -i 's/"name": "[^"]*"/"name": "inputron"/' package.json
-
-      # Second publish under the name "inputron" with commit SHA
-      - name: Publish under "inputron" with SHA
-        run: npm publish --tag beta --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      # Revert the package.json back to original name
-      - name: Revert package.json changes
-        run: git checkout package.json
-
-  publish-production:
+  version-bump:
     needs: [install-and-build, test]
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.publish_job == 'production' }}
@@ -105,30 +201,39 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Build the project before publishing
-      - name: Build the project
-        run: npm run build
+      # Bump the version in package.json and package-lock.json
+      - name: Bump version
+        run: npm version ${{ github.event.inputs.version_bump }} --no-git-tag-version
+
+      # Re-run npm install to update package-lock.json based on the bumped version
+      - name: Reinstall dependencies after version bump
+        run: npm install
+
+      # Commit changes after both package.json and package-lock.json are updated
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add package.json package-lock.json
+          git commit -m "ci: bump version to ${{ github.event.inputs.version_bump }}"
+          git push
 
       - name: Set npm registry
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
-      # First publish using the name from package.json without commit SHA
       - name: Publish production version
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # Modify package.json to publish under "inputron"
       - name: Temporarily change package name to "inputron"
         run: |
           sed -i 's/"name": "[^"]*"/"name": "inputron"/' package.json
 
-      # Second publish under the name "inputron"
       - name: Publish under "inputron"
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # Revert the package.json back to original name
       - name: Revert package.json changes
         run: git checkout package.json
