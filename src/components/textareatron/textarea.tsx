@@ -13,6 +13,7 @@ interface TextareaTronProps
   customOnChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   prompt?: string;
   value: string;
+  triggerKeys?: string[];
   labelConfig?: {
     content?: string;
     visible?: boolean;
@@ -29,6 +30,7 @@ const TextareaTron = ({
   labelConfig,
   buttonConfiguration,
   prompt,
+  triggerKeys,
   className,
   ...props
 }: TextareaTronProps) => {
@@ -38,30 +40,22 @@ const TextareaTron = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>("");
 
-  const handleKeyboardCommands = (
-    event: React.KeyboardEvent<HTMLTextAreaElement>
-  ) => {
-    // handle enter key
-    if (event.key === "Enter") {
-      event.preventDefault();
-      handleEnhance({ spiceitup: true, prompt: prompt });
+  const handleKeyboardCommands = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+ 
+    if (triggerKeys && triggerKeys?.includes(event.key)) {
+        event.preventDefault();
+        handleEnhance({ spiceitup: true, prompt: prompt });
     }
 
-    // handle tab key
-    if (event.key === "Tab") {
-      event.preventDefault();
-      handleEnhance({ spiceitup: true, prompt: prompt });
-    }
-    // handle control z
     if (event.key === "z" && event.ctrlKey) {
-      event.preventDefault();
-      // Perform the undo operation
-      setBackup(backup.slice(0, -1));
-      if (name) {
-        setTextValue(backup[backup.length - 1] || "");
-      }
+        event.preventDefault();
+        setBackup(backup.slice(0, -1));
+        if (name) {
+            setTextValue( backup[backup.length - 1] || '');
+        }
+
     }
-  };
+};
 
   const handleEnhance = async ({
     spiceitup,
