@@ -1,137 +1,3 @@
-# name: CI Pipeline
-
-# on:
-#   push:
-#     branches:
-#       - main
-
-#   workflow_dispatch:
-#     inputs:
-#       publish_job:
-#         description: "Choose which publish job to run"
-#         required: true
-#         default: "beta"
-#         type: choice
-#         options:
-#           - beta
-#           - production
-
-# jobs:
-#   install-and-build:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-
-#       - name: Cache node modules
-#         uses: actions/cache@v2
-#         with:
-#           path: node_modules
-#           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-#           restore-keys: |
-#             ${{ runner.os }}-node-
-
-#       - name: Install dependencies
-#         run: npm install
-
-#       # Build the project to generate the 'dist/' folder
-#       - name: Build the project
-#         run: npm run build
-
-#   test:
-#     needs: install-and-build
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-
-#       # Run the tests before publishing
-#       - name: Run tests
-#         run: npm run test
-
-#   publish-beta:
-#     needs: [install-and-build, test]
-#     runs-on: ubuntu-latest
-#     if: ${{ github.event.inputs.publish_job == 'beta' }}
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-
-#       - name: Install dependencies
-#         run: npm install
-
-#       # Build the project before publishing
-#       - name: Build the project
-#         run: npm run build
-
-#       - name: Set npm registry
-#         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
-#       # Append commit SHA to version for beta
-#       - name: Append commit SHA to version for beta
-#         run: |
-#           GIT_COMMIT_HASH=$(git rev-parse --short HEAD)
-#           npm version $(node -p "require('./package.json').version + '-beta.${GIT_COMMIT_HASH}'") --no-git-tag-version
-
-#       # First publish using the name from package.json with the commit SHA
-#       - name: Publish beta version with SHA
-#         run: npm publish --tag beta --access public
-#         env:
-#           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-#       # Modify package.json to publish under "inputron"
-#       - name: Temporarily change package name to "inputron"
-#         run: |
-#           sed -i 's/"name": "[^"]*"/"name": "inputron"/' package.json
-
-#       # Second publish under the name "inputron" with commit SHA
-#       - name: Publish under "inputron" with SHA
-#         run: npm publish --tag beta --access public
-#         env:
-#           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-#       # Revert the package.json back to original name
-#       - name: Revert package.json changes
-#         run: git checkout package.json
-
-#   publish-production:
-#     needs: [install-and-build, test]
-#     runs-on: ubuntu-latest
-#     if: ${{ github.event.inputs.publish_job == 'production' }}
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-
-#       - name: Install dependencies
-#         run: npm install
-
-#       # Build the project before publishing
-#       - name: Build the project
-#         run: npm run build
-
-#       - name: Set npm registry
-#         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
-#       # First publish using the name from package.json without commit SHA
-#       - name: Publish production version
-#         run: npm publish --access public
-#         env:
-#           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-#       # Modify package.json to publish under "inputron"
-#       - name: Temporarily change package name to "inputron"
-#         run: |
-#           sed -i 's/"name": "[^"]*"/"name": "inputron"/' package.json
-
-#       # Second publish under the name "inputron"
-#       - name: Publish under "inputron"
-#         run: npm publish --access public
-#         env:
-#           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-#       # Revert the package.json back to original name
-#       - name: Revert package.json changes
-#         run: git checkout package.json
 name: CI Pipeline
 
 on:
@@ -150,8 +16,8 @@ on:
           - beta
           - production
       version_bump:
-        description: "Choose version bump type"
-        required: true
+        description: "Choose version bump type (for production only)"
+        required: false
         default: "patch"
         type: choice
         options:
@@ -159,7 +25,7 @@ on:
           - minor
           - patch
       changelog_message:
-        description: "Message to include in CHANGELOG.md"
+        description: "Message to include in CHANGELOG.md (for production only)"
         required: false
 
 permissions:
@@ -186,20 +52,9 @@ jobs:
       - name: Build the project
         run: npm run build
 
-  test:
+  publish:
     needs: install-and-build
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Run tests
-        run: npm run test
-
-  version-bump:
-    needs: [install-and-build, test]
-    runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.publish_job == 'production' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -207,16 +62,19 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Bump the version in package.json and package-lock.json
-      - name: Bump version
+      # Handle production release: version bump only
+      - name: Bump version (production only)
+        if: ${{ github.event.inputs.publish_job == 'production' }}
         run: npm version ${{ github.event.inputs.version_bump }} --no-git-tag-version
 
       # Re-run npm install to update package-lock.json based on the bumped version
-      - name: Reinstall dependencies after version bump
+      - name: Update package-lock.json (production only)
+        if: ${{ github.event.inputs.publish_job == 'production' }}
         run: npm install
 
-      # Update changelog with user input or default message
-      - name: Update changelog
+      # Update changelog (production only)
+      - name: Update changelog (production only)
+        if: ${{ github.event.inputs.publish_job == 'production' }}
         run: |
           VERSION=$(node -p "require('./package.json').version")
           CHANGELOG_MESSAGE="${{ github.event.inputs.changelog_message }}"
@@ -226,19 +84,29 @@ jobs:
           echo "## $VERSION - $(date +'%Y-%m-%d')" >> CHANGELOG.md
           echo "$CHANGELOG_MESSAGE" >> CHANGELOG.md
 
-      # Commit changes after both package.json, package-lock.json, and changelog are updated
-      - name: Commit and push changes
+      # Commit version bump, package-lock.json update, and changelog changes
+      - name: Commit and push changes (production only)
+        if: ${{ github.event.inputs.publish_job == 'production' }}
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add package.json package-lock.json CHANGELOG.md
-          git commit -m "ci: bump version to ${{ github.event.inputs.version_bump }} and update changelog"
+          git commit -m "ci: bump version to $VERSION and update changelog"
           git push
 
-      - name: Set npm registry
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+      # Beta publish (without version bump commit)
+      - name: Publish beta (without commit)
+        if: ${{ github.event.inputs.publish_job == 'beta' }}
+        run: |
+          GIT_COMMIT_HASH=$(git rev-parse --short HEAD)
+          npm version "$(node -p "require('./package.json').version")-beta.${GIT_COMMIT_HASH}" --no-git-tag-version
+          npm publish --tag beta --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Publish production version
+      # Production publish
+      - name: Publish production
+        if: ${{ github.event.inputs.publish_job == 'production' }}
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -252,5 +120,5 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Revert package.json changes
+      - name: Revert package.json changes (for name change)
         run: git checkout package.json
