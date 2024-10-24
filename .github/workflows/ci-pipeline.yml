@@ -52,8 +52,19 @@ jobs:
       - name: Build the project
         run: npm run build
 
-  publish:
+  test:
     needs: install-and-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Run the tests before publishing
+      - name: Run tests
+        run: npm run test
+
+  publish:
+    needs: [install-and-build, test]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -61,6 +72,10 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      # Set npm registry with authentication
+      - name: Set npm registry
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
       # Handle production release: version bump only
       - name: Bump version (production only)
