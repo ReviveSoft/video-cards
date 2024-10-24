@@ -8,48 +8,6 @@ Inputron is a powerful package designed to enhance user input experiences in web
 - **Enhanced User Experience**: Improve the usability and accessibility of your forms.
 - **Seamless Integration**: Quickly integrate Inputron into your existing projects with minimal effort.
 
-## Example Usage
-
-
-Here is an example of how to use the `TextareaTron` component from the Inputron package:
-
-```jsx
-"use client";
-import { enhanceAction} from 'inputron/server'
-import { TextareaTron } from "inputron/client";
-import React, { useState } from 'react';
-
-const ExampleComponent = () => {
-  const [explain, setExplain] = useState('');
-
-  return (
-    <TextareaTron
-      autoFocus
-      enhanceAction={enhanceAction}
-      id="explaination"
-      name="explaination"
-      labelConfig={{
-        content: "Tell us how it started",
-        visible: false,
-        style: "text-sm font-semibold text-gray-700",
-      }}
-      placeholder="Tell us how it started"
-      value={explain}
-      setTextValue={setExplain}
-      prompt='translate to spanish'
-      buttonConfiguration={{
-        button_visible: false,
-        text_visible: true,
-        text: "Enhance",
-        style: "bg-blue-500 text-xs text-white hover:bg-pink-500 hover:text-black",
-      }}
-    />
-  );
-};
-
-export default ExampleComponent;
-```
-
 ## Installation
 
 To install Inputron, use npm or yarn:
