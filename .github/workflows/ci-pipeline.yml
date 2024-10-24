@@ -96,8 +96,8 @@ jobs:
           if [ -z "$CHANGELOG_MESSAGE" ]; then
             CHANGELOG_MESSAGE="Version bumped to $VERSION"
           fi
-          echo "## $VERSION - $(date +'%Y-%m-%d')" >> CHANGELOG.md
-          echo "$CHANGELOG_MESSAGE" >> CHANGELOG.md
+          # Prepend the new changelog entry with proper formatting
+          echo -e "## $VERSION - $(date +'%Y-%m-%d')\n$CHANGELOG_MESSAGE\n\n$(cat CHANGELOG.md)" > CHANGELOG.md
 
       # Commit version bump, package-lock.json update, and changelog changes
       - name: Commit and push changes (production only)
