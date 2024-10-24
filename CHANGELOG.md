@@ -1,3 +1,6 @@
+## 1.4.4 - 2024-10-24
+exported inputron types
+
 ## 1.4.3 - 2024-10-24
 fix: reversed changelog order
 
