@@ -1,3 +1,6 @@
+## 1.4.6 - 2024-10-24
+Added missing prop TriggerKeys to TextareaTron
+
 ## 1.4.5 - 2024-10-24
 Fixed code distribution issue
 
