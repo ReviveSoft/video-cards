@@ -9,10 +9,9 @@ import { cn } from "../../lib/utils";
 import { EnhanceAPIPayloadType ,ButtonConfigType} from "../../types";
 
 
-interface TextareaTronProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+
+interface TextareaTronProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   customOnChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  // enhanceAction: (payload: EnhanceAPIPayloadType) => EnhanceResponseType;
   prompt?: string;
   value: string;
   labelConfig?: {
@@ -25,8 +24,7 @@ interface TextareaTronProps
   buttonConfiguration?: ButtonConfigType;
 }
 
-const TextareaTron = React.forwardRef<HTMLTextAreaElement, TextareaTronProps>(
-  (
+const TextareaTron =  (
     {
       customOnChange,
       setTextValue,
@@ -35,11 +33,10 @@ const TextareaTron = React.forwardRef<HTMLTextAreaElement, TextareaTronProps>(
       prompt,
       className,
       ...props
-    },
-    ref
+    }:TextareaTronProps
   ) => {
     const { name, value } = props;
-    console.log("textarea tron was called", name);
+    // console.log("textarea tron was called", name);
     const [backup, setBackup] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>("");
@@ -79,7 +76,7 @@ const TextareaTron = React.forwardRef<HTMLTextAreaElement, TextareaTronProps>(
       spiceitUp?: string;
       prompt?: string;
     }) => {
-      console.log("handle enhance was called");
+      // console.log("handle enhance was called");
       setError("");
       setLoading(true);
       await new Promise((resolve) => setTimeout(resolve, 200));
@@ -111,6 +108,7 @@ const TextareaTron = React.forwardRef<HTMLTextAreaElement, TextareaTronProps>(
         setLoading(false);
       } catch (error: unknown) {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        console.log("error", error);
         setLoading(false);
         setError("error connecting to server");
       }
@@ -120,10 +118,11 @@ const TextareaTron = React.forwardRef<HTMLTextAreaElement, TextareaTronProps>(
       <>
         {labelConfig && labelConfig.visible && (
           <label htmlFor={name} className={labelConfig?.style}>
-            {labelConfig?.content || "Your comment"}
+            {labelConfig?.content || "Your text"}
           </label>
         )}
         <textarea
+          
           name={name}
           onKeyDown={handleKeyboardCommands}
           onChange={async (e) => {
@@ -137,7 +136,7 @@ const TextareaTron = React.forwardRef<HTMLTextAreaElement, TextareaTronProps>(
             "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
             className
           )}
-          ref={ref}
+          // ref={ref}
           {...props}
         />
 
@@ -161,8 +160,166 @@ const TextareaTron = React.forwardRef<HTMLTextAreaElement, TextareaTronProps>(
       </>
     );
   }
-);
 
-TextareaTron.displayName = "TextareaTron";
+
+
+
+
+
+// interface TextareaTronProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+//   customOnChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+//   prompt?: string;
+//   value: string;
+//   labelConfig?: {
+//     content?: string;
+//     visible?: boolean;
+//     style?: string;
+//     justify?: string;
+//   };
+//   setTextValue: (value: string) => void;
+//   buttonConfiguration?: ButtonConfigType;
+// }
+
+// const TextareaTron = React.forwardRef(
+//   (
+//     {
+//       customOnChange,
+//       setTextValue,
+//       labelConfig,
+//       buttonConfiguration,
+//       prompt,
+//       className,
+//       ...props
+//     }:TextareaTronProps,
+//     ref: React.ForwardedRef<TextareaTronProps>
+//   ) => {
+//     const { name, value } = props;
+//     // console.log("textarea tron was called", name);
+//     const [backup, setBackup] = useState<string[]>([]);
+//     const [loading, setLoading] = useState(false);
+//     const [error, setError] = useState<string | null>("");
+
+//     const handleKeyboardCommands = (
+//       event: React.KeyboardEvent<HTMLTextAreaElement>
+//     ) => {
+//       // handle enter key
+//       if (event.key === "Enter") {
+//         event.preventDefault();
+//         handleEnhance({ spiceitup: true, prompt: prompt });
+//       }
+
+//       // handle tab key
+//       if (event.key === "Tab") {
+//         event.preventDefault();
+//         handleEnhance({ spiceitup: true, prompt: prompt });
+//       }
+//       // handle control z
+//       if (event.key === "z" && event.ctrlKey) {
+//         event.preventDefault();
+//         // Perform the undo operation
+//         setBackup(backup.slice(0, -1));
+//         if (name) {
+//           setTextValue(backup[backup.length - 1] || "");
+//         }
+//       }
+//     };
+
+//     const handleEnhance = async ({
+//       spiceitup,
+//       number_of_lines,
+//       prompt,
+//     }: {
+//       spiceitup?: boolean;
+//       number_of_lines?: string;
+//       spiceitUp?: string;
+//       prompt?: string;
+//     }) => {
+//       // console.log("handle enhance was called");
+//       setError("");
+//       setLoading(true);
+//       await new Promise((resolve) => setTimeout(resolve, 200));
+//       try {
+//         const payload: EnhanceAPIPayloadType = {
+//           inputText: value || "",
+//           promptOverride: prompt || "",
+//           user: "Inputron.com",
+//           spiceitup: spiceitup || true,
+//           number_of_lines: number_of_lines || "one",
+//         };
+//         console.log("payload 2", payload);
+//         const data = await enhanceAction(payload);
+
+//         if (data.error && data.error !== "") {
+//           console.log("error", data.error);
+//           setError(data.error);
+//           setLoading(false);
+//           return;
+//         }
+
+//         if (data) {
+//           setBackup([...backup, value]);
+//         }
+
+//         if (name) {
+//           setTextValue((data && data.data.message) || "");
+//         }
+//         setLoading(false);
+//       } catch (error: unknown) {
+//         // eslint-disable-next-line @typescript-eslint/no-unused-vars
+//         console.log("error", error);
+//         setLoading(false);
+//         setError("error connecting to server");
+//       }
+//     };
+
+//     return (
+//       <>
+//         {labelConfig && labelConfig.visible && (
+//           <label htmlFor={name} className={labelConfig?.style}>
+//             {labelConfig?.content || "Your text"}
+//           </label>
+//         )}
+//         <textarea
+          
+//           name={name}
+//           onKeyDown={handleKeyboardCommands}
+//           onChange={async (e) => {
+//             if (customOnChange) {
+//               await customOnChange(e);
+//             } else {
+//               setTextValue(e.target.value);
+//             }
+//           }}
+//           className={cn(
+//             "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+//             className
+//           )}
+//           // ref={ref}
+//           {...props}
+//         />
+
+//         {error && <div className="mt-2 text-red-500 text-sm">{error}</div>}
+//         <div
+//           className={cn(
+//             "flex justify-start",
+//             buttonConfiguration?.justify === "left"
+//               ? "justify-start"
+//               : "justify-end"
+//           )}
+//           onClick={async () => {
+//             handleEnhance({ spiceitup: true, prompt: prompt });
+//           }}
+//         >
+//           <TextareaTronButton
+//             btnConfig={buttonConfiguration}
+//             loading={loading}
+//           />
+//         </div>
+//       </>
+//     );
+//   }
+// );
+
+// TextareaTron.displayName = "TextareaTron";
 
 export { TextareaTron };

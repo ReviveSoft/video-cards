@@ -6,7 +6,6 @@ export async function enhanceAction(payload: EnhanceAPIPayloadType) {
     const backendServer = getInptronEngineApiEndPoint();
     const endpoint = `${backendServer}/v1/enhance`;
     const { inputText, promptOverride, spiceitup } = payload;
-    console.log('promptOverride ->', promptOverride);
     try {
         const res = await fetch(endpoint, {
             method: "POST",
@@ -25,11 +24,11 @@ export async function enhanceAction(payload: EnhanceAPIPayloadType) {
                 additionalPrompt: promptOverride
             }),
         });
-        console.log('res ->', res.status);
+        // console.log('res ->', res.status);
 
         if (res.status === 200) {
             const data: { data: { message?: string }, error?: string } = await res.json();
-            console.log('returning data', data);
+            // console.log('returning data', data);
             return data;
         }
 
@@ -50,7 +49,7 @@ export async function enhanceAction(payload: EnhanceAPIPayloadType) {
 
 
 export async function suggestionAction(payload: SuggestAPIPayloadType) {
-    console.log('calling suggestionAction from server?');
+    // console.log('calling suggestionAction from server?');
     const { list } = payload;
     const backendServer = getInptronEngineApiEndPoint();
     const endpoint = `${backendServer}/v1/suggest`;
@@ -70,7 +69,7 @@ export async function suggestionAction(payload: SuggestAPIPayloadType) {
         });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const data: any = await res.json();
-        console.log('data', data);
+        // console.log('data', data);
         return data;
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -81,7 +80,7 @@ export async function suggestionAction(payload: SuggestAPIPayloadType) {
 }
 
 export async function translateAction(payload: TranslateAPIPayloadType) {
-    console.log('calling translateAction from server?');
+    // console.log('calling translateAction from server?');
     const { text, languages } = payload;
     const backendServer = getInptronEngineApiEndPoint();
     const endpoint = `${backendServer}/v1/translate`;
@@ -102,7 +101,7 @@ export async function translateAction(payload: TranslateAPIPayloadType) {
         });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const data: any = await res.json();
-        console.log('data', data);
+        // console.log('data', data);
         return data;
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -131,12 +130,8 @@ export async function predictTextAction(payload: PredictTextPayloadType) {
                 text: text,
             }),
         } );
-        //console.log('res ->', res);
          const response  = await res.json();
-        console.log('response ->', response);
         const data: { data: { message?: string }, error?: string | null } = response;
-        console.log('returning data', data);
-
         return data;
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -148,18 +143,13 @@ export async function predictTextAction(payload: PredictTextPayloadType) {
 
 
 export async function selectronAction(payload: SuggestAPIPayloadType) {
-    console.log('calling selectronAction from server?', payload);
-
     const { list } = payload;
-    console.log('data returned from server?', list);
     const headers = {
         "Content-Type": "application/json",
         "x-api-key": getInputronEngineApiKey() || '',
         "client-id": getClientId() || ''
     };
 
-    console.log('list', list);
-    console.log('headers', headers);
     const backendServer = getInptronEngineApiEndPoint();
     const endpoint = `${backendServer}/v1/suggest`;
     try {
@@ -172,7 +162,6 @@ export async function selectronAction(payload: SuggestAPIPayloadType) {
             }),
         });
         const data: SelectronResponseType = await res.json();
-        console.log('selectronAction data', data);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
        // return [{ value: "light", label: "Light" }, { value: "dark", label: "Dark" }, { value: "system", label: "System" }];
  

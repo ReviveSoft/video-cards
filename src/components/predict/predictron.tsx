@@ -18,7 +18,7 @@ type predictType = { data: { message?: string }; error?: string | null };
 export default function PredictiveText({
   name,
   onChange,
-  triggerInterval = 1000,
+  triggerInterval = 300,
   loaderOptions ={visible:true,className:""}
 }: PredictiveTextProps) {
   const [userText, setUserText] = useState<string>("");

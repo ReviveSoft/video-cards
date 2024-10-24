@@ -10,7 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export  function getInptronEngineApiEndPoint():string
 {
-  console.log('process.env.INPUTRON_ENGINE_API_ENDPOINT', process.env.INPUTRON_ENGINE_API_ENDPOINT);
+  //console.log('process.env.INPUTRON_ENGINE_API_ENDPOINT', process.env.INPUTRON_ENGINE_API_ENDPOINT);
  // return import.meta.env.INPUTRON_ENGINE_API_ENDPOINT ;
   return process.env.INPUTRON_ENGINE_API_ENDPOINT || "https://api.inputron.com";
 }
@@ -29,6 +29,6 @@ export function getBaseUrl():string
 
 export function getClientId():string
 {
-  console.log('process.env.INPUTRON_CLIENT_ID', process.env.INPUTRON_CLIENT_ID);
+  //console.log('process.env.INPUTRON_CLIENT_ID', process.env.INPUTRON_CLIENT_ID);
   return process.env.INPUTRON_CLIENT_ID || "";
 }
