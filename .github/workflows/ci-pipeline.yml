@@ -158,7 +158,9 @@ on:
           - major
           - minor
           - patch
-
+permissions:
+  contents: write   # This grants write access to the repository
+  
 jobs:
   install-and-build:
     runs-on: ubuntu-latest
