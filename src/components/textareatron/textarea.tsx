@@ -2,11 +2,11 @@
 import "../../styles/tailwind.css";
 import { useState } from "react";
 import { TextareaTronButton } from "./textarea-tron-button";
-import { enhanceAction } from "../../actions/inputronActions";
+import { enhanceAction, invokeActions } from "../../actions/inputronActions";
 
 import * as React from "react";
 import { cn } from "../../lib/utils";
-import { EnhanceAPIPayloadType, ButtonConfigType } from "../../types";
+import { EnhanceAPIPayloadType, ButtonConfigType, InvokeAPIPayloadType } from "../../types";
 
 interface TextareaTronProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -20,6 +20,7 @@ interface TextareaTronProps
     style?: string;
     justify?: string;
   };
+  agentId?: string; // Agent ID prop to check and invoke function
   setTextValue: (value: string) => void;
   buttonConfiguration?: ButtonConfigType;
 }
@@ -31,31 +32,79 @@ const TextareaTron = ({
   buttonConfiguration,
   prompt,
   triggerKeys,
+  agentId, // Using agentId here
   className,
   ...props
 }: TextareaTronProps) => {
   const { name, value } = props;
-  // console.log("textarea tron was called", name);
+  console.log("textarea tron was called", name, value);
   const [backup, setBackup] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>("");
 
   const handleKeyboardCommands = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
- 
-    if (triggerKeys && triggerKeys?.includes(event.key)) {
-        event.preventDefault();
+    // Check if trigger keys are pressed
+    if (triggerKeys && triggerKeys.includes(event.key)) {
+      event.preventDefault();
+      if (agentId) {
+        handleInvoke({ agentId: agentId, spiceitup: true }); // Call handleInvoke if agentId is present
+      } else {
         handleEnhance({ spiceitup: true, prompt: prompt });
+      }
     }
 
+    // Undo (Ctrl + Z) logic
     if (event.key === "z" && event.ctrlKey) {
-        event.preventDefault();
-        setBackup(backup.slice(0, -1));
-        if (name) {
-            setTextValue( backup[backup.length - 1] || '');
-        }
-
+      event.preventDefault();
+      setBackup(backup.slice(0, -1));
+      if (name) {
+        setTextValue(backup[backup.length - 1] || "");
+      }
     }
-};
+  };
+
+  const handleInvoke = async ({
+    agentId,
+    spiceitup,
+    number_of_lines
+  }: {
+    spiceitup?: boolean;
+    number_of_lines?: string;
+    agentId: string
+  }) => {
+    setError("");
+    setLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    try {
+      const payload: InvokeAPIPayloadType = {
+        agentId,
+        inputText: value || "",
+        user: "Inputron.com",
+        spiceitup: spiceitup || false,
+        number_of_lines: number_of_lines || "1",
+      };
+      console.log("Invoking with agentId", payload);
+      const data = await invokeActions(payload);
+
+      if (data.error && data.error !== "") {
+        setError(data.error);
+        setLoading(false);
+        return;
+      }
+
+      if (data) {
+        setBackup([...backup, value]);
+      }
+
+      if (name) {
+        setTextValue((data && data.data.message) || "");
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      setError("Error connecting to server");
+    }
+  };
 
   const handleEnhance = async ({
     spiceitup,
@@ -79,7 +128,7 @@ const TextareaTron = ({
         spiceitup: spiceitup || true,
         number_of_lines: number_of_lines || "one",
       };
-      console.log("payload 2", payload);
+      console.log("Enhancing", payload);
       const data = await enhanceAction(payload);
 
       if (data.error && data.error !== "") {
@@ -139,7 +188,11 @@ const TextareaTron = ({
             : "justify-end"
         )}
         onClick={async () => {
-          handleEnhance({ spiceitup: true, prompt: prompt });
+          if (agentId) {
+            handleInvoke({ agentId, spiceitup: true }); // Call handleInvoke if agentId is present
+          } else {
+            handleEnhance({ spiceitup: true, prompt: prompt });
+          }
         }}
       >
         <TextareaTronButton btnConfig={buttonConfiguration} loading={loading} />

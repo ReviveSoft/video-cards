@@ -67,6 +67,14 @@ export type EnhanceAPIPayloadType = {
   number_of_lines: string;
 };
 
+export type InvokeAPIPayloadType = {
+  agentId: string;
+  inputText: string;
+  user: string;
+  spiceitup: boolean;
+  number_of_lines: string;
+};
+
 export type PredictTextPayloadType = {
   text: string;
 };

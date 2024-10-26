@@ -1,6 +1,51 @@
 'use server'
 import { getInptronEngineApiEndPoint, getClientId, getInputronEngineApiKey } from '../lib/utils';
-import { EnhanceAPIPayloadType, SuggestAPIPayloadType, PredictTextPayloadType, TranslateAPIPayloadType } from '../types';
+import { EnhanceAPIPayloadType, SuggestAPIPayloadType, PredictTextPayloadType, TranslateAPIPayloadType, InvokeAPIPayloadType } from '../types';
+
+export async function invokeActions(payload: InvokeAPIPayloadType) {
+    const backendServer = getInptronEngineApiEndPoint();
+   
+    const { inputText, spiceitup, agentId, number_of_lines } = payload;
+    const endpoint = `${backendServer}/v1/prompts/${agentId}/invoke`;
+    try {
+        console.log("Please log creds", endpoint, getInputronEngineApiKey(), getClientId())
+        const res = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-api-key": getInputronEngineApiKey() || '',
+                "client-id": getClientId() || '',
+                "cache-control": "no-cache",
+                "pragma": "no-cache",
+            },
+            body: JSON.stringify({
+                userPrompt: inputText,
+                spiceItUp: spiceitup || true,
+                minumumLines: number_of_lines || "1"
+            }),
+        });
+        // console.log('res ->', res.status);
+
+        if (res.status === 200) {
+            const data: { data: { message?: string }, error?: string } = await res.json();
+            // console.log('returning data', data);
+            return data;
+        }
+
+        console.log('error', res);
+        return { data:{message:''}, error: 'UNABLE TO CONNECT TO SERVER ( Reason  = ' + res.statusText + ')' };
+
+    }
+
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    catch (e: unknown) {
+        console.log('error', e);
+
+        return { data:{message:''}, error: 'UNABLE TO CONNECT TO SERVER ( Reason  = ' + e + ')' };
+
+    }
+
+}
 
 export async function enhanceAction(payload: EnhanceAPIPayloadType) {
     const backendServer = getInptronEngineApiEndPoint();
