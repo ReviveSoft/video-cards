@@ -159,7 +159,7 @@ export async function translateAction(payload: TranslateAPIPayloadType) {
 export async function predictTextAction(payload: PredictTextPayloadType) {
 
     const backendServer = getInptronEngineApiEndPoint();
-    const endpoint = `${backendServer}/v1/predict-next-words`;
+    const endpoint = `${backendServer}/v1/predict`;
     const { text } = payload;
     try {
         const res = await fetch(endpoint, {
