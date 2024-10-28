@@ -196,7 +196,7 @@ export async function selectronAction(payload: SuggestAPIPayloadType) {
     };
 
     const backendServer = getInptronEngineApiEndPoint();
-    const endpoint = `${backendServer}/v1/suggest`;
+    const endpoint = `${backendServer}/v1/select`;
     try {
         const res = await fetch(endpoint, {
             method: "POST",

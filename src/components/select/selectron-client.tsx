@@ -38,12 +38,15 @@ type SelectronResponseType = {
 interface selectronProps extends React.InputHTMLAttributes<HTMLSelectElement> { 
   prompt: string;
   title: string;
+  selectTriggerClassName?:string;
+  selectOptionsClassName?:string;
+  selectedItemClassName?:string;
   onValueChange: (value: string) => void;
 };
 
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const Selectron = ({onValueChange,prompt,title,...props}:selectronProps) => {
+  const Selectron = ({selectTriggerClassName,selectOptionsClassName,selectedItemClassName,onValueChange,prompt,title,...props}:selectronProps) => {
   const [data, setData] = useState<SelectronResponseType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -82,22 +85,25 @@ interface selectronProps extends React.InputHTMLAttributes<HTMLSelectElement> {
     const selection = data.data?.list;
 
     return (
-      <Select onValueChange={onValueChange}>
+      <Select onValueChange={onValueChange} name={props.name}>
         <SelectTrigger
           className={cn(
             "flex h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
-            props.style
+            selectTriggerClassName
           )}
         >
           <SelectValue placeholder={title} />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className={cn(
+            " bg-white text-black",
+            selectOptionsClassName
+          )}>
           {selection &&
             selection
               .filter((item): item is any => typeof item !== "string")
               .map((item: SelectronType) => {
                 return (
-                  <SelectItem key={item.id} value={item.value} className="bg-white">
+                  <SelectItem key={item.id} value={item.value} className={`${selectedItemClassName}`} >
                     {item.value}
                   </SelectItem>
                 );
