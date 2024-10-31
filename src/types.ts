@@ -80,6 +80,11 @@ export type PredictTextPayloadType = {
 };
 
 
+export type feedbackTextPayloadType = {
+  text: string;
+};
+
+
 export type TranslateAPIPayloadType = {
   text:string;
   languages: string[]

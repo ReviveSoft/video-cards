@@ -1,6 +1,6 @@
 'use server'
 import { getInptronEngineApiEndPoint, getClientId, getInputronEngineApiKey } from '../lib/utils';
-import { EnhanceAPIPayloadType, SuggestAPIPayloadType, PredictTextPayloadType, TranslateAPIPayloadType, InvokeAPIPayloadType } from '../types';
+import { EnhanceAPIPayloadType, SuggestAPIPayloadType, PredictTextPayloadType, TranslateAPIPayloadType, InvokeAPIPayloadType,feedbackTextPayloadType } from '../types';
 
 export async function invokeActions(payload: InvokeAPIPayloadType) {
     const backendServer = getInptronEngineApiEndPoint();
@@ -91,7 +91,6 @@ export async function enhanceAction(payload: EnhanceAPIPayloadType) {
     }
 
 }
-
 
 export async function suggestionAction(payload: SuggestAPIPayloadType) {
     // console.log('calling suggestionAction from server?');
@@ -186,7 +185,6 @@ export async function predictTextAction(payload: PredictTextPayloadType) {
     }
 }
 
-
 export async function selectronAction(payload: SuggestAPIPayloadType) {
     const { list } = payload;
     const headers = {
@@ -201,9 +199,9 @@ export async function selectronAction(payload: SuggestAPIPayloadType) {
         const res = await fetch(endpoint, {
             method: "POST",
             headers: headers,
-
             body: JSON.stringify({
-                list: list
+                list: list,
+                cache:{ strategy: "no-cache" },
             }),
         });
         const data: SelectronResponseType = await res.json();
@@ -219,7 +217,35 @@ export async function selectronAction(payload: SuggestAPIPayloadType) {
     }
 }
 
+export async function feedbackTextAction(payload: feedbackTextPayloadType) {
 
+    const backendServer = getInptronEngineApiEndPoint();
+    const endpoint = `${backendServer}/v1/feedback`;
+    const { text } = payload;
+    try {
+        const res = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-api-key": getInputronEngineApiKey() || '',
+                "client-id": getClientId() || '',
+                "cache-control": "no-cache",
+                "pragma": "no-cache",
+            },
+            body: JSON.stringify({
+                text: text,
+            }),
+        } );
+         const response  = await res.json();
+        const data: { data: { message?: string }, error?: string | null } = response;
+        return data;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    catch (e: any) {
+        console.log('error while calling predict api', e);
+        return {data:{message:''}, error: 'UNABLE TO CONNECT TO SERVER' };
+    }
+}
 
 type SelectronResponseType = {
     data: {
