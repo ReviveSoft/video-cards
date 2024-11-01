@@ -49,7 +49,7 @@ export async function invokeActions(payload: InvokeAPIPayloadType) {
 
 export async function enhanceAction(payload: EnhanceAPIPayloadType) {
     const backendServer = getInptronEngineApiEndPoint();
-    const endpoint = `${backendServer}/v1/actions/enhance`;
+    const endpoint = `${backendServer}/va/agents/enhance`;
     const { inputText, promptOverride, spiceitup } = payload;
     try {
         const res = await fetch(endpoint, {
@@ -96,7 +96,7 @@ export async function suggestionAction(payload: SuggestAPIPayloadType) {
     // console.log('calling suggestionAction from server?');
     const { list } = payload;
     const backendServer = getInptronEngineApiEndPoint();
-    const endpoint = `${backendServer}/v1/actions/suggest`;
+    const endpoint = `${backendServer}/va/agents/suggest`;
     try {
         const res = await fetch(endpoint, {
             method: "POST",
@@ -127,7 +127,7 @@ export async function translateAction(payload: TranslateAPIPayloadType) {
     // console.log('calling translateAction from server?');
     const { text, languages } = payload;
     const backendServer = getInptronEngineApiEndPoint();
-    const endpoint = `${backendServer}/v1/actions/translate`;
+    const endpoint = `${backendServer}/va/agents/translate`;
     try {
         const res = await fetch(endpoint, {
             method: "POST",
@@ -158,7 +158,7 @@ export async function translateAction(payload: TranslateAPIPayloadType) {
 export async function predictTextAction(payload: PredictTextPayloadType) {
 
     const backendServer = getInptronEngineApiEndPoint();
-    const endpoint = `${backendServer}/v1/actions/predict`;
+    const endpoint = `${backendServer}/va/agents/predict`;
     const { text } = payload;
     try {
         const res = await fetch(endpoint, {
@@ -194,7 +194,7 @@ export async function selectronAction(payload: SuggestAPIPayloadType) {
     };
 
     const backendServer = getInptronEngineApiEndPoint();
-    const endpoint = `${backendServer}/v1/actions/select`;
+    const endpoint = `${backendServer}/va/agents/select`;
     try {
         const res = await fetch(endpoint, {
             method: "POST",
