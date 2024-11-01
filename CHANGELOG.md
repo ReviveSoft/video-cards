@@ -1,3 +1,6 @@
+## 1.4.9 - 2024-11-01
+update paths for product apis to include /agents/
+
 ## 1.4.7 - 2024-10-26
 Updated endpoint name.
 
