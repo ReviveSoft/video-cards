@@ -26,6 +26,7 @@ interface TextareaTronProps
 }
 
 const TextareaTron = ({
+  name,
   customOnChange,
   setTextValue,
   labelConfig,
@@ -36,7 +37,7 @@ const TextareaTron = ({
   className,
   ...props
 }: TextareaTronProps) => {
-  const { name, value } = props;
+  const { value } = props;
   console.log("textarea tron was called", name, value);
   const [backup, setBackup] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);

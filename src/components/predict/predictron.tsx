@@ -159,7 +159,7 @@ export default function PredictiveText({
 
       <div
         onClick={focusContentEditable}
-        className="p-4 shadow cursor-text rounded-lg text-left w-full h-[150px] mx-auto overflow-auto border-gray-300 border-[0.5px]"
+        className="p-4 shadow cursor-text rounded-lg text-left w-full h-36 mx-auto overflow-auto border-gray-300 border-[0.5px]"
       >
         <span
           autoFocus

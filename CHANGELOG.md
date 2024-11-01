@@ -1,3 +1,6 @@
+## 1.4.7 - 2024-10-26
+Updated endpoint name.
+
 ## 1.4.6 - 2024-10-24
 Added missing prop TriggerKeys to TextareaTron
 
