@@ -1,3 +1,6 @@
+## 1.4.10 - 2024-11-01
+replace the subpath actions with agents
+
 ## 1.4.9 - 2024-11-01
 update paths for product apis to include /agents/
 
