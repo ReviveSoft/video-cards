@@ -6,7 +6,7 @@ export async function invokeActions(payload: InvokeAPIPayloadType) {
     const backendServer = getInptronEngineApiEndPoint();
    
     const { inputText, spiceitup, agentId, number_of_lines } = payload;
-    const endpoint = `${backendServer}/v1/prompts/${agentId}/invoke`;
+    const endpoint = `${backendServer}/v1/custom/agents/${agentId}/invoke`;
     try {
         console.log("Please log creds", endpoint, getInputronEngineApiKey(), getClientId())
         const res = await fetch(endpoint, {
