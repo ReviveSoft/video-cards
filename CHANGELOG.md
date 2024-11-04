@@ -1,3 +1,6 @@
+## 1.4.12 - 2024-11-04
+Support for custom agents
+
 ## 1.4.11 - 2024-11-01
 Updated the correct path 
 
