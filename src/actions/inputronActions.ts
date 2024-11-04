@@ -1,11 +1,20 @@
 'use server'
-import { getInptronEngineApiEndPoint, getClientId, getInputronEngineApiKey } from '../lib/utils';
+import { getInptronEngineApiEndPoint, getClientId, getInputronEngineApiKey, getCustomAgentFieldNameMap } from '../lib/utils';
 import { EnhanceAPIPayloadType, SuggestAPIPayloadType, PredictTextPayloadType, TranslateAPIPayloadType, InvokeAPIPayloadType,feedbackTextPayloadType } from '../types';
 
 export async function invokeActions(payload: InvokeAPIPayloadType) {
     const backendServer = getInptronEngineApiEndPoint();
+    const agentFieldNameMap = getCustomAgentFieldNameMap();
    
-    const { inputText, spiceitup, agentId, number_of_lines } = payload;
+    const { name, inputText, spiceitup, number_of_lines } = payload;
+    let agentId;
+    if (agentFieldNameMap && name && agentFieldNameMap[name]) {
+        agentId = agentFieldNameMap[name];
+        console.log(`Agent ID found for ${name}:`, agentId);
+    } else {
+        console.warn(`No Agent ID found for name: ${name}`);
+        return { data:{message:''}, error: `UNABLE TO PROCESS YOUR REQUEST  name=${name} ${process.env.InputronCustomAgentFieldMap}  agentFieldNameMap=${JSON.stringify(agentFieldNameMap, null, 4)}   ${agentFieldNameMap[name]}` };
+    }
     const endpoint = `${backendServer}/v1/custom/agents/${agentId}/invoke`;
     try {
         console.log("Please log creds", endpoint, getInputronEngineApiKey(), getClientId())

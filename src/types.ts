@@ -68,7 +68,7 @@ export type EnhanceAPIPayloadType = {
 };
 
 export type InvokeAPIPayloadType = {
-  agentId: string;
+  name: string;
   inputText: string;
   user: string;
   spiceitup: boolean;
@@ -88,4 +88,22 @@ export type feedbackTextPayloadType = {
 export type TranslateAPIPayloadType = {
   text:string;
   languages: string[]
+}
+
+
+export enum AgentTypes {
+  analyze = "analyze",
+  custom = "custom",
+  enhance = "enhance",
+  feedback = "feedback",
+  predict = "predict",
+  reason = "reason"
+}
+
+export interface CustomAgentMap {
+  [name: string]: string;
+}
+
+export interface CustomAgentFieldMap {
+  [clientId: string]: CustomAgentMap;
 }

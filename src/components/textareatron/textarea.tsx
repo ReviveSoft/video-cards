@@ -6,7 +6,7 @@ import { enhanceAction, invokeActions } from "../../actions/inputronActions";
 
 import * as React from "react";
 import { cn } from "../../lib/utils";
-import { EnhanceAPIPayloadType, ButtonConfigType, InvokeAPIPayloadType } from "../../types";
+import { EnhanceAPIPayloadType, ButtonConfigType, InvokeAPIPayloadType, AgentTypes } from "../../types";
 
 interface TextareaTronProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -20,7 +20,7 @@ interface TextareaTronProps
     style?: string;
     justify?: string;
   };
-  agentId?: string; // Agent ID prop to check and invoke function
+  agent?: AgentTypes; // Agent ID prop to check and invoke function
   setTextValue: (value: string) => void;
   buttonConfiguration?: ButtonConfigType;
 }
@@ -33,7 +33,7 @@ const TextareaTron = ({
   buttonConfiguration,
   prompt,
   triggerKeys,
-  agentId, // Using agentId here
+  agent,
   className,
   ...props
 }: TextareaTronProps) => {
@@ -47,9 +47,12 @@ const TextareaTron = ({
     // Check if trigger keys are pressed
     if (triggerKeys && triggerKeys.includes(event.key)) {
       event.preventDefault();
-      if (agentId) {
-        handleInvoke({ agentId: agentId, spiceitup: true }); // Call handleInvoke if agentId is present
-      } else {
+      if (agent?.toLowerCase() === AgentTypes.custom && name) {
+        handleInvoke({ name, spiceitup: true }); // Call handleInvoke if agentId is present
+      } else if (agent?.toLowerCase() === AgentTypes.enhance && name) {
+        handleEnhance({ spiceitup: true, prompt: prompt });
+      }
+      else {
         handleEnhance({ spiceitup: true, prompt: prompt });
       }
     }
@@ -65,20 +68,20 @@ const TextareaTron = ({
   };
 
   const handleInvoke = async ({
-    agentId,
+    name,
     spiceitup,
     number_of_lines
   }: {
+    name: string;
     spiceitup?: boolean;
     number_of_lines?: string;
-    agentId: string
   }) => {
     setError("");
     setLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 200));
     try {
       const payload: InvokeAPIPayloadType = {
-        agentId,
+        name,
         inputText: value || "",
         user: "Inputron.com",
         spiceitup: spiceitup || false,
@@ -189,8 +192,8 @@ const TextareaTron = ({
             : "justify-end"
         )}
         onClick={async () => {
-          if (agentId) {
-            handleInvoke({ agentId, spiceitup: true }); // Call handleInvoke if agentId is present
+          if (agent === AgentTypes.custom && name) {
+            handleInvoke({ name, spiceitup: true }); // Call handleInvoke if agentId is present
           } else {
             handleEnhance({ spiceitup: true, prompt: prompt });
           }
