@@ -7,6 +7,8 @@ import TranslateTron from './components/translate/translatetron';
 import {SuggesTron} from './components/suggest';
 import {LabelTron}  from './components/label';
 import  Predictron from './components/predict/predictron';
+import { ComboTextAreaTron } from "./components/combotextareatron";
+import { AgentConfig, AgentTypes, ButtonConfigType } from "./types";
 
 export {
   TextareaTron,
@@ -14,6 +16,9 @@ export {
   TranslateTron,
   SuggesTron,
   LabelTron,
-  Predictron
+  Predictron,
+  ComboTextAreaTron,
+  AgentTypes
 };
+  export type { ButtonConfigType, AgentConfig };
 

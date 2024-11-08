@@ -13,6 +13,13 @@ export type ButtonConfigType = {
   justify?: string;
 };
 
+export type AgentConfig = {
+  name: string; // Unique identifier for the agent (e.g., "predict", "enhance")
+  type: AgentTypes; // Agent type from the AgentTypes enum
+  label?: string; // Optional label to describe the agent
+  endpoint: (inputText: string) => Promise<any>; // Function that triggers the respective action
+};
+
 export type EnhanceResponseType = {
   data: {
     message: string;
@@ -65,6 +72,12 @@ export type EnhanceAPIPayloadType = {
   promptOverride: string;
   spiceitup: boolean;
   number_of_lines: string;
+  metadata?: {
+    field_name?: string;
+    action?: string;
+  };
+  useCachedResponse?: boolean
+  
 };
 
 export type InvokeAPIPayloadType = {
@@ -73,6 +86,11 @@ export type InvokeAPIPayloadType = {
   user: string;
   spiceitup: boolean;
   number_of_lines: string;
+  metadata?: {
+    field_name?: string;
+    action?: string;
+  };
+  useCachedResponse?: boolean
 };
 
 export type PredictTextPayloadType = {
