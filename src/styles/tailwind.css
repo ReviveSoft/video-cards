@@ -2,101 +2,306 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Suggestion Box at the Bottom */
-.suggestion-box {
-  margin-top: 8px;
-  padding: 8px;
-  border: 1px solid #d1d5db; /* Light gray border */
-  border-radius: 4px;
-  background-color: #f9fafb; /* Light background */
-  font-size: 14px;
-  color: #374151; /* Dark gray text */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
 
-.suggestion-box p {
-  margin: 0;
-  font-weight: 500;
-}
 
-.suggestion-box button {
-  background-color: #3b82f6; /* Blue background */
-  color: white;
-  padding: 4px 8px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.suggestion-box button:hover {
-  background-color: #2563eb; /* Darker blue on hover */
-}
-
-/* Inline Prediction Text */
-.predicted-text {
-  color: #9ca3af; /* Muted gray color for prediction text */
-  font-size: 14px;
-  font-style: italic;
-  margin-left: 4px;
-}
-
-/* General TextArea Styles */
-.ComboTextAreaTron-wrapper {
-  position: relative;
-}
-
-.ComboTextAreaTron-wrapper textarea {
+.rs-hexagon-cover {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
-  min-height: 120px;
-  padding: 8px;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  resize: vertical;
+
+  mask-image: url("./../assets/masks/hexagon-cover.svg");
+  mask-size: cover;
+  aspect-ratio: 277 / 301;
 }
 
-.ComboTextAreaTron-wrapper label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #374151; /* Dark gray color */
-  margin-bottom: 4px;
+.rs-circle-cover {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  mask-image: url("./../assets/masks/circle-cover.svg");
+  mask-size: cover;
+  aspect-ratio: 1;
 }
 
-.ComboTextAreaTron-wrapper .textarea-style {
-  padding: 12px;
-  font-size: 14px;
-  color: #374151;
-  border-radius: 4px;
-  border: 1px solid #d1d5db;
-  resize: none;
+
+.rs-pill-cover {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  mask-image: url("./../assets/masks/pill-cover.svg");
+  mask-size: cover;
+  aspect-ratio: 1;
 }
 
-.ComboTextAreaTron-wrapper .textarea-style::placeholder {
-  color: #9ca3af; /* Lighter gray for placeholder */
+.pill-right-cover {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  mask-image: url("./../assets/masks/pill-cover.svg");
+  mask-composite: intersect;
+  mask-size: cover;
+
+  aspect-ratio: 1;
+}
+.rs-star-cover {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+
+  mask-image: url("./../assets/masks/star-cover.svg");
+  mask-size: cover;
+  aspect-ratio: 1;
 }
 
-/* Ghost Text Styling */
-.ghost-text-overlay {
-    margin-top: 8px; /* Space below editor */
-    width: 100%; /* Full width to match input */
-    text-align: left; /* Align text within the container */
-    color: rgba(0, 0, 0, 0.4);
-    font-size: 1rem;
-    padding: 4px;
-    background-color: #f9f9f9;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-  }
+.rs-flower-cover {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
 
-/* Tab Indicator within the Ghost Text */
-.ghost-text-overlay .tab-indicator {
-  padding: 2px 6px;
-  background-color: #d0d0d0; /* Light gray background for Tab indicator */
-  border-radius: 4px;
-  color: #555; /* Darker gray for text */
-  font-size: 0.8rem;
+  mask-image: url("./../assets/masks/flower-cover.svg");
+  mask-size: cover;
+  aspect-ratio: 1;
+}
+
+.rs-parent-cover {
+  position: relative;
+  width: 70%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  margin: 2rem auto;
+}
+
+.video-cover {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0px auto;
+}
+
+
+
+.rs-door-cover
+{
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+
+  mask-image: url("./../assets/masks/door-cover-2.svg");
+  mask-size: cover;
+  aspect-ratio: 1;
+}
+
+
+.rs-heart-cover
+{
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  mask-image: url("./../assets/masks/heart-cover.svg");
+  mask-size: cover;
+  aspect-ratio: 1;
+}
+
+
+
+.rs-house-cover
+{
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  mask-image: url("./../assets/masks/house-cover.svg");
+  mask-size: cover;
+  aspect-ratio: 1;
+}
+
+
+
+
+.rs-mellow-cover
+{
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  mask-image: url("./../assets/masks/mellow-cover.svg");
+  mask-size: cover;
+  aspect-ratio: 1;
+}
+
+
+.rs-stripe-cover
+{
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  mask-image: url("./../assets/masks/stripe-cover.svg");
+  mask-size: cover;
+  aspect-ratio: 1;
+}
+
+
+
+.rs-chat-cover
+{
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  mask-image: url("./../assets/masks/chat-cover.svg");
+  mask-size: cover;
+  aspect-ratio: 1;
+}
+
+
+.rs-cloud-cover
+{
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  mask-image: url("./../assets/masks/cloud-cover.svg");
+  mask-size: cover;
+  aspect-ratio: 1;
+}
+
+
+
+
+.rs-saw-cover
+{
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  mask-image: url("./../assets/masks/saw-cover.svg");
+  mask-size: cover;
+  aspect-ratio: 1;
+}
+
+.wide-parent-cover
+{
+  position: relative;
+  width:100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+
+}
+
+
+.rs-wide-saw-cover
+{
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+
+  mask-image: url("./../assets/masks/wide-saw-cover.svg");
+  mask-size: cover;
+  aspect-ratio:16/9;
+}
+
+
+
+
+
+.wide-sqaure-cover
+{
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+
+  mask-image: url("./../assets/masks/wide-square-cover.svg");
+  mask-size: cover;
+  aspect-ratio:16/9;
+}
+
+
+
+
+
+.wide-pill-cover
+{
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+
+  mask-image: url("./../assets/masks/wide-square-cover.svg");
+  mask-size: cover;
+  aspect-ratio:16/9;
+}
+
+
+.square-cover
+{  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+
+  mask-image: url("./../assets/masks/square-cover.svg");
+  mask-size: cover;
+  aspect-ratio:1/1;
+}
+.wide-flag-cover
+{
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+
+  mask-image: url("./../assets/masks/wide-square-cover.svg");
+  mask-size: cover;
+  aspect-ratio:16/9;
 }

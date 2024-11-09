@@ -1,8 +1,8 @@
 {
-  "name": "@revivesoft/inputron",
-  "description": "AI Powered building blocks for your forms 🚀! Added auto complete , translation , enhancement and more to your text areas and inputs.",
+  "name": "@revivesoft/video-cards",
+  "description": "Beautiful Cards with for video animations.",
   "private": false,
-  "version": "1.4.13",
+  "version": "0.0.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -26,7 +26,6 @@
     "draft-js": "^0.11.7",
     "lexical": "^0.19.0",
     "lucide-react": "^0.454.0",
-    "next": "^14.2.15",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "rollup-preserve-directives": "^1.1.2",
@@ -67,10 +66,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/client.es.js",
       "require": "./dist/client.cjs.js"
-    },
-    "./server": {
-      "import": "./dist/server.es.js",
-      "require": "./dist/server.cjs.js"
     },
     "./css": "./dist/style.css"
   }

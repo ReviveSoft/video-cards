@@ -20,5 +20,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "postcss.config.js", "tailwind.config.js", "depricate/inputronActions.ts"]
+  "include": ["src", "postcss.config.js", "tailwind.config.js", "depricate/inputronActions.ts", "index.ts"]
 }
