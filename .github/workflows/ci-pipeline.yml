@@ -130,15 +130,3 @@ jobs:
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Temporarily change package name to "inputron"
-        run: |
-          sed -i 's/"name": "[^"]*"/"name": "inputron"/' package.json
-
-      - name: Publish under "inputron"
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Revert package.json changes (for name change)
-        run: git checkout package.json
