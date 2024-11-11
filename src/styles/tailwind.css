@@ -81,6 +81,15 @@
   aspect-ratio: 1;
 }
 
+
+.rs-parent-cover {
+  position: relative;
+  width: 70%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  margin: 2rem auto;
+}
+
 .parent-cover {
   position: relative;
   width: 70%;
