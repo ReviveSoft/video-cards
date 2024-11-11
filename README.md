@@ -43,14 +43,18 @@ const Example = () => {
   };
 
   return (
-    <VidedCard
-      title="Sample Video Card"
-      description="This is a sample video card description."
-      imageUrl="https://example.com/sample-image.jpg"
-      videoUrl="https://example.com/sample-video.mp4"
-      actionText="Learn More"
-      onClick={handleAction}
-    />
+      <VidedCard
+              variant="flower"
+              maskImage={"./images/image1.svg"}
+              videoFile={"./videos/autocomplete4.mp4"}
+              headerText="FLOWER COVER"
+              title="Flower"
+              backgroundClass="bg-gradient-to-t from-green-300 to-green-400"
+              buttonTextColor="text-green-300"
+              sizeClasses="w-full"
+              description="Add an artistic flair to your content with a flower shaped ."
+              buttonText="GET STARTED"
+            />
   );
 };
 
