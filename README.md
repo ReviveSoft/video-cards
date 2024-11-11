@@ -1,4 +1,10 @@
-import { VidedCard } from './client';
+## Installation
+
+npm install @revivesoft/video-cards
+
+## Add to your react/nextjs projects
+
+import { VidedCard } from '@revivesoft/video-cards';
 
 ## VidedCard Component
 
@@ -20,7 +26,7 @@ The `VidedCard` component accepts the following props:
 - `description` (string): A brief description displayed on the card.
 - `imageUrl` (string): The URL of the image to be displayed.
 - `videoUrl` (string): The URL of the video to be played on hover.
-- `actionText` (string): The text for the action item.
+- `variant` (star, circle, chat, cloud, heart, mellow, diamond, flower, hexagon, door, pill, pillRight, saw, square, or house)
 - `onClick` (function): Callback function to handle the action item click.
 
 ### Usage
