@@ -79,7 +79,7 @@ const ProductCardWithCover = ({
         {headerText}
       </div>
       <div
-        className="parent-cover"
+        className="parent-cover rs-parent-cover "
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -96,7 +96,7 @@ const ProductCardWithCover = ({
             Your browser does not support the video tag.
           </video>
 
-          <img src={maskImage} hidden={isHovered} className=" video-cover" />
+          <img src={maskImage} hidden={isHovered} className="video-cover" />
         </div>
       </div>
 
