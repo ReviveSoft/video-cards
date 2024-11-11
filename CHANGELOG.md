@@ -1,3 +1,6 @@
+## 0.1.0 - 2024-11-11
+Added documentation
+
 ## 0.0.3 - 2024-11-09
 Publish the first version
 
