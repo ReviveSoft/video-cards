@@ -1,3 +1,6 @@
+## 0.1.1 - 2024-11-11
+CSS for cards
+
 ## 0.1.0 - 2024-11-11
 Added documentation
 
