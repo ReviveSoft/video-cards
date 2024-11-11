@@ -71,7 +71,7 @@ const ProductCardWithCover = ({
         !backgroundClass ? "bg-blue-500" : backgroundClass
       }  text-black ${
         !sizeClasses
-          ? "min-w-80  min-h-[500px]"
+          ? "min-w-80  max-w-96 min-h-[500px]"
           : sizeClasses
       } flex flex-col items-center content-center justify-between text-left`}
     >

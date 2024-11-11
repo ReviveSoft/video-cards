@@ -81,7 +81,7 @@
   aspect-ratio: 1;
 }
 
-.rs-parent-cover {
+.parent-cover {
   position: relative;
   width: 70%;
   height: auto;
