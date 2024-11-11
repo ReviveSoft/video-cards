@@ -49,3 +49,10 @@ const Example = () => {
 };
 
 export default Example;
+
+
+
+
+### About
+
+The `VidedCard` component was created by [ReviveSoft](https://www.revivesoft.com) to enhance user engagement with interactive media elements.
