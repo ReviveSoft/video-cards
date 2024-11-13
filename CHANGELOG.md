@@ -1,3 +1,6 @@
+## 0.4.0 - 2024-11-11
+bug fix
+
 ## 0.3.0 - 2024-11-11
 SVG masks still not working
 
