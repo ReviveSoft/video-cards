@@ -12,7 +12,7 @@ import "@revivesoft/video-cards/css";
 
 ## VidedCard Component
 
-The `VidedCard` component is a beautiful and interactive card that displays an image and a video. The video gets activated on hover, providing an engaging user experience.
+The `VideoCard` component is a beautiful and interactive card that displays an image and a video. The video gets activated on hover, providing an engaging user experience.
 
 You can view examples here https://examples.inputron.com/video-cards
 
@@ -42,7 +42,7 @@ Here is an example of how to use the `VidedCard` component:
 import React from 'react';
 import "@revivesoft/video-cards/css";
 
-import { VidedCard } from "@revivesoft/video-cards";
+import { VideoCard } from "@revivesoft/video-cards";
 
 const Example = () => {
   const handleAction = () => {
@@ -50,7 +50,7 @@ const Example = () => {
   };
 
   return (
-      <VidedCard
+      <VideoCard
               variant="flower"
               maskImage={"https://examples.inputron.com/images/image1.svg"}
               videoFile={"https://examples.inputron.com/videos/revivesoft.mp4"}
@@ -73,4 +73,4 @@ export default Example;
 
 ### About
 
-The `VidedCard` component was created by [ReviveSoft](https://www.revivesoft.net) to enhance user engagement with interactive media elements.
+The `VideoCard` component was created by [ReviveSoft](https://www.revivesoft.net) to enhance user engagement with interactive media elements.
